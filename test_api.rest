@@ -1,0 +1,131 @@
+POST http://localhost:3000/users
+Content-Type: application/json
+
+{
+    "firstName": "Mark Draw",
+    "lastName":"Hakeem",
+    "email":"hakeem@gmail.com",
+    "password":"123456",
+    "dob":"15/05/1999",
+    "selfie":"myself",
+    "docs":"mydocs",
+    "tel":"672973390"
+}
+
+
+###
+
+GET http://localhost:3000/users
+
+
+###
+GET http://localhost:3000/users/664125241f3b1456dff45be7
+
+
+###
+GET http://localhost:3000/users/cliffsakwebetrand@gmail.com
+
+
+###
+DELETE http://localhost:3000/users/66412058c334dc1869568532
+
+
+###
+PATCH  http://localhost:3000/users/664125241f3b1456dff45be7
+Content-Type: application/json
+
+{
+    "lastName":"Paul Andrew",
+    "firstName":"Smith"
+}
+
+
+
+
+# Group API TEST
+
+
+###
+POST http://localhost:3000/groups/
+Content-Type: application/json
+
+
+{
+    "groupName":"Flutter developer",
+    "groupIcon":"https://app.png",
+    "groupLevy":"30000",
+    "groupMember":["Paul1234"],
+    "groupAdmins":["Matthew"]
+}
+
+
+###
+
+GET http://localhost:3000/chats/chats/6643265ebb6e0b07a94226e2
+
+
+
+###
+
+GET http://localhost:3000/groups/664621ce3c8d54976afb44c5
+
+
+####
+
+PATCH  http://localhost:3000/groups/members/6647087c978c71b878b1fb5b
+Content-Type: application/json
+
+{ 
+"userId":"User897987njkno89"
+
+}
+   
+###
+PATCH  http://localhost:3000/groups/admins/6647087c978c71b878b1fb5b
+Content-Type: application/json
+
+{ 
+"userId":"User897987njkno89"
+
+}
+
+
+
+###
+DELETE http://localhost:3000/groups/members/6647087c978c71b878b1fb5b
+Content-Type: application/json
+
+{
+    "userId":"User897987njkno89"
+}
+
+
+###
+DELETE http://localhost:3000/groups/admins/6647087c978c71b878b1fb5b
+Content-Type: application/json
+
+{
+    "userId":"User897987njkno89"
+}
+
+
+
+
+
+
+###
+
+GET http://localhost:3000/user/6643265ebb6e0b07a94226e2
+
+
+
+###
+
+GET http://localhost:3000/user/chats/6643265ebb6e0b07a94226e2
+
+
+
+
+###
+
+GET http://localhost:3000/user/groups/6643265ebb6e0b07a94226e2
