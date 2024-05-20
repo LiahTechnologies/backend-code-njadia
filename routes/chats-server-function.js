@@ -165,4 +165,22 @@ next()
 
 }
 
+
+export function updateUserDetails(userId)=>{
+    
+
+        res.users.chats=[
+            ... res.users.chats,
+            userId
+        ];
+    
+
+    try {
+        const updateResult = await res.users.save()
+        res.json(updateResult)
+        
+    } catch (error) {
+        return res.status(500).json({message:error.message})
+    }
+}
 module.exports = chatsRouters
