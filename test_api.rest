@@ -2,9 +2,9 @@ POST http://localhost:3000/users
 Content-Type: application/json
 
 {
-    "firstName": "Mark Draw",
-    "lastName":"Hakeem",
-    "email":"hakeem@gmail.com",
+    "firstName": "Salathiel",
+    "lastName":"Ojage",
+    "email":"jude@gmail.com",
     "password":"123456",
     "dob":"15/05/1999",
     "selfie":"myself",
@@ -19,7 +19,7 @@ GET http://localhost:3000/users
 
 
 ###
-GET http://localhost:3000/users/664125241f3b1456dff45be7
+GET http://localhost:3000/users/664f229f324dd11d891b3188
 
 
 ###
@@ -31,12 +31,12 @@ DELETE http://localhost:3000/users/66412058c334dc1869568532
 
 
 ###
-PATCH  http://localhost:3000/users/664125241f3b1456dff45be7
+PATCH  http://localhost:3000/users/664f28a0e95c9c0ec79f165f
 Content-Type: application/json
 
 {
-    "lastName":"Paul Andrew",
-    "firstName":"Smith"
+    "lastName":"Ojage",
+    "firstName":"Salathiel"
 }
 
 
@@ -129,3 +129,9 @@ GET http://localhost:3000/user/chats/6643265ebb6e0b07a94226e2
 ###
 
 GET http://localhost:3000/user/groups/6643265ebb6e0b07a94226e2
+
+
+
+###
+
+POST http://localhost:3000/api/messages/send/123

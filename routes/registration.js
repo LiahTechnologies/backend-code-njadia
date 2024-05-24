@@ -30,8 +30,8 @@ routers.get('/:email', async(req,res)=>{
 // create user
 
 routers.post('/',async(req,res)=>{
-      // res.send(res.status)
-      const newUser = new registrationModel({
+
+   const newUser = new registrationModel({
          firstName:req.body.firstName,
          lastName:req.body.lastName,
          email:req.body.email,
@@ -47,9 +47,9 @@ routers.post('/',async(req,res)=>{
          
  
       const activeUser=   await newUser.save()
-         status= res.status(201).json(activeUser)
+        res.status(201).json(activeUser)
       } catch (error) {
-         status=res.status(400).json({message:error.message})
+         res.status(400).json({message:error.message})
       }
 })
 
@@ -58,11 +58,11 @@ routers.post('/',async(req,res)=>{
 
 routers.patch('/:id',getUser,async(req,res)=>{
    if(req.body.firstName!=null){
-      res.currentUser.firstName= res.body.firstName
+      res.currentUser.firstName= req.body.firstName
    }
 
    if(req.body.lastName!=null){
-      res.currentUser.lastName= res.body.lastName
+      res.currentUser.lastName= req.body.lastName
    }
 
    try {
@@ -130,7 +130,7 @@ res.status= status
 async function getUser(req, res, next){
    let currentUser
    try {
-         console.log("THIS IS THE USER ID",req.param.id)
+         console.log("THIS IS THE USER ID",req.params.id)
        currentUser =  await registrationModel.findById(req.params.id)
       if(currentUser==null) return res.status(500).json({message:"User doesn't exist"})
          

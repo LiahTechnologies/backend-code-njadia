@@ -5,15 +5,18 @@
   "main": "index.js",
   "scripts": {
     "start": "nodemon server.js",
+    "start_chat": "nodemon ./routes/chat_server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "cookieparser": "^0.1.0",
     "cors": "^2.8.5",
     "express": "^4.19.2",
     "http": "0.0.1-security",
+    "jsonwebtoken": "^9.0.2",
     "mongodb": "^6.6.1",
     "mongoose": "^5.5.7",
     "nodemon": "^3.1.0",
