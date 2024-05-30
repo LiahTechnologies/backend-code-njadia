@@ -1,14 +1,18 @@
- import { Timestamp } from "mongodb";
-import mongoose from "mongoose";
+ 
+const mongoose = require('mongoose')
 
  const messageSchema = new  mongoose.Schema({
     senderId:{
-        type: mongoose.Schema.type.objectId,
+        type: mongoose.Schema.Types.ObjectId,
+
+        // type: mongoose.Schema.type.ObjectId,
         ref:"User",
         required: true
     },
-    recieverId:{
-        type: mongoose.Schema.type.objectId,
+    receiverId:{
+        // type: String,
+
+        type: mongoose.Schema.Types.ObjectId,
         ref:"User",
         required: true
     },
@@ -20,5 +24,5 @@ import mongoose from "mongoose";
  },{timestamp:true});
 
 
- const Message = mongoose.model("message",messageSchema);
- export default Message;
+ const Message = mongoose.model("messages",messageSchema);
+ module.exports = Message;

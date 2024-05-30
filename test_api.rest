@@ -1,10 +1,15 @@
-POST http://localhost:3000/users
+# Users 
+
+
+
+###
+POST http://localhost:5000/api/auth/signup
 Content-Type: application/json
 
 {
-    "firstName": "Salathiel",
-    "lastName":"Ojage",
-    "email":"jude@gmail.com",
+    "firstName": "manuah",
+    "lastName":"man",
+    "email":"bob@gmail.com",
     "password":"123456",
     "dob":"15/05/1999",
     "selfie":"myself",
@@ -12,126 +17,183 @@ Content-Type: application/json
     "tel":"672973390"
 }
 
+# Login has a problem
 
 ###
-
-GET http://localhost:3000/users
-
-
-###
-GET http://localhost:3000/users/664f229f324dd11d891b3188
-
-
-###
-GET http://localhost:3000/users/cliffsakwebetrand@gmail.com
-
-
-###
-DELETE http://localhost:3000/users/66412058c334dc1869568532
-
-
-###
-PATCH  http://localhost:3000/users/664f28a0e95c9c0ec79f165f
-Content-Type: application/json
+POST http://localhost:5000/api/auth/login
+Content-Type:application/json
 
 {
-    "lastName":"Ojage",
-    "firstName":"Salathiel"
-}
-
-
-
-
-# Group API TEST
-
-
-###
-POST http://localhost:3000/groups/
-Content-Type: application/json
-
-
-{
-    "groupName":"Flutter developer",
-    "groupIcon":"https://app.png",
-    "groupLevy":"30000",
-    "groupMember":["Paul1234"],
-    "groupAdmins":["Matthew"]
+    "email":"ju@gmail.com",
+    "password":"123456"
 }
 
 
 ###
 
-GET http://localhost:3000/chats/chats/6643265ebb6e0b07a94226e2
+POST http://localhost:5000/api/auth/logout
 
 
 
-###
+# All users
 
-GET http://localhost:3000/groups/664621ce3c8d54976afb44c5
+####
+GEt http://localhost:5000/api/users
+
+
+#Get a single user
+
+####
+GEt http://localhost:5000/api/users/6658350560a1e40eae8b307d
+
+
 
 
 ####
-
-PATCH  http://localhost:3000/groups/members/6647087c978c71b878b1fb5b
-Content-Type: application/json
-
-{ 
-"userId":"User897987njkno89"
-
-}
-   
-###
-PATCH  http://localhost:3000/groups/admins/6647087c978c71b878b1fb5b
-Content-Type: application/json
-
-{ 
-"userId":"User897987njkno89"
-
-}
-
-
-
-###
-DELETE http://localhost:3000/groups/members/6647087c978c71b878b1fb5b
+PATCH http://localhost:5000/api/users/6658350560a1e40eae8b307d
 Content-Type: application/json
 
 {
-    "userId":"User897987njkno89"
+    "firstName":"Betrandcliff",
+    "lastName":"Sakwe"
 }
 
 
+####
+DELETE  http://localhost:5000/api/users/6658350560a1e40eae8b307d
+
+
+
+
+
+
+##Groups
+
+
+
+
+
+#All groups
+
 ###
-DELETE http://localhost:3000/groups/admins/6647087c978c71b878b1fb5b
+GET http://localhost:5000/api/groups
+
+
+#create  a group
+
+###
+POST http://localhost:5000/api/groups
 Content-Type: application/json
 
 {
-    "userId":"User897987njkno89"
+    "groupName":"React developer",
+    "groupLevy":"30000",
+    "groupIcon":"icon.png",
+    "groupMembers":[],
+    "groupAdmins":"Paula89797snsinos9"
+}
+
+#Get group admins
+
+###
+GET http://localhost:5000/api/groups/admins/665847c0483c9d3318c5220d
+
+
+
+
+#Get group members
+
+###
+GET http://localhost:5000/api/groups/members/665847c0483c9d3318c5220d
+
+
+#add  group admin
+
+###
+PATCH  http://localhost:5000/api/groups/admins/665847c0483c9d3318c5220d
+Content-Type: application/json
+
+{
+    "userId":"johon2028498m"
+}
+
+
+#add  group member
+
+###
+PATCH  http://localhost:5000/api/groups/members/665847c0483c9d3318c5220d
+Content-Type: application/json
+
+{
+    "userId":"johon2028498m"
+}
+
+
+#Delete  group member
+
+###
+DELETE   http://localhost:5000/api/groups/members/6655ff54577ac03095c13d08
+Content-Type: application/json
+
+{
+    "userId":"johon2028498m"
+}
+
+
+#Delete group admin
+
+###
+DELETE   http://localhost:5000/api/groups/admins/66571e6684334628302ee27c
+Content-Type: application/json
+
+{
+    "userId":"johon2028498m"
 }
 
 
 
+##USER CHAT LIST
 
 
 
 ###
-
-GET http://localhost:3000/user/6643265ebb6e0b07a94226e2
-
-
-
-###
-
-GET http://localhost:3000/user/chats/6643265ebb6e0b07a94226e2
+GEt http://localhost:5000/api/user-chats/665835b660a1e40eae8b307e
 
 
 
+##Add New Chat
 
 ###
 
-GET http://localhost:3000/user/groups/6643265ebb6e0b07a94226e2
+PATCH  http://localhost:5000/api/user-chats/chats/6658575e6fb7ae68270596d0
+Content-Type: application/json
+
+{
+    "userId":"jamesqu09s809ss"
+}
 
 
+
+##Add New Groups
 
 ###
 
-POST http://localhost:3000/api/messages/send/123
+PATCH  http://localhost:5000/api/user-chats/groups/6658575e6fb7ae68270596d0
+Content-Type: application/json
+
+{
+    "groupId":"jamesqu09s809s"
+}
+
+
+
+##AMessages
+
+###
+
+POST  http://localhost:5000/api/messages/send/665858adec9c9c696f2cbd52
+Content-Type: application/json
+
+{
+    "message":"Hello boy"
+}

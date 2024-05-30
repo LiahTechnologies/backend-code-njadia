@@ -1,64 +1,95 @@
-const { default: Conversation } = require("../model/conversationMode")
-const { default: Message } = require("../model/messageModel")
 
- const sendMessage =async (req, res)=>{
-   try {
-     const {message} = req.body
-     const {id}  = req.params
-     const senderId = req.user._id
+const Conversation = require("../model/conversationMode")
+const Message = require('../model/messageModel')
+const { getRecieverSocketId } = require("../socket/socket")
 
-    let conservation = await Conversation.findOne({participants:{all:{senderId,recieverId}}})
+  const sendMessage =async (req, res)=>{
+  
+    try {
     
-    if(!conservation)
-        conservation = await conservation.create({
-    participants:[senderId,recieverId],
-    message
+        const {message} = req.body
+        const { id:receiverId}  = req.params
+        const senderId = req.user._id
+    
+       //  find conversiation between users
+    
+       let conversation = await Conversation.findOne({participants: {$all: [senderId, receiverId] }, })
+        
+       if(!conversation){ 
+    
+           conversation = await Conversation.create({
+           participants:[senderId,receiverId]
+    
+       // message [ this is not necessary because the default will be empty]
+           })}
+    
+    
+           // create a message
+    
+       const newMessage = new Message({
+           senderId,
+           receiverId,
+           message
+       })
+    
+       if(newMessage) conversation.messages.push(newMessage._id)
+    
+       // This approach of saving wiil take more execution time
+       // await conservation.save()
+       // await newMessage.save()
+       
+       Promise.all([conversation.save(), newMessage.save()])
+       
+       const recieverSocketId = getRecieverSocketId(receiverId)
+    
+       if(recieverSocketId){
+           // O.to.emit is used to send  messages to specific clients
+           IO.to(recieverSocketId).emit("newMessage",newMessage);
+       }
+       
+       res.status(201).json(newMessage)
+    
+       }
+    
+    catch (error) {
+           console.log(`Error in sending message ${error.message}`,)
+           res.status(500).json({error:"Internal sending message"})
+      }
 
-    })
-
-    const newMessage = new Message({
-        senderId,
-        recieverId,
-        message
-    })
-
-    if(newMessage) Conversation.message.push(newMessage._id)
-
-    // This approach of saving wiil take more execution time
-    // await conservation.save()
-    // await newMessage.save()
-     
-    Promise.all([Conversation.save(), newMessage.save()])
-
-    res.status(201).json(newMessage)
-
-} catch (error) {
-        console.log(`Error in sending message ${error.message}`,)
-        res.status(500).json({error:"Internal error sending message"})
-   }
 }
 
 
 
-const getMessage = async (req,res)=>{
+ const getMessages = async (req,res)=>{
+
+
     try {
         
         const {id:userToChatId} = req.params
         const senderId = req.user._id
 
-        const Conversation = await Conversation.findOne({
-            participants: {all:{senderId,recieverId}},
+        const conversation = await Conversation.findOne({
+            participants: {$all:[senderId,userToChatId]},
 
         }).populate("messages")
 
 
-        if(!Conversation)
+        if(!conversation)
             res.status(200).json([])
-        res.status(200).json(Conversation.messages)
 
-    } catch (error) {
+        
+        res.status(200).json(conversation.messages)
+
+    } 
+    catch (error) {
         console.log(`Error in sending message ${error.message}`,)
         res.status(500).json({error:"Internal error sending message"})
     }
+
+
 }
-module.exports= sendMessage
+
+module.exports= {sendMessage,getMessages}
+
+
+

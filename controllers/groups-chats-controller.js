@@ -3,7 +3,8 @@ const groupRoutes = express.Router()
 const groupModel = require('../model/group')
 
 /**********ADD ADMINS TO GROUP********** */
-groupRoutes.patch("/admins/:id", getGroup,async(req,res)=>{
+
+const addAdmin = async(req,res)=>{
     if(req.body.userId!=null){
 
         res.group.groupAdmins=[
@@ -19,14 +20,14 @@ groupRoutes.patch("/admins/:id", getGroup,async(req,res)=>{
     } catch (error) {
         return res.status(500).json({message:error.message})
     }
-})
+}
 
 
 
 
 /**********ADD USER TO GROUP********** */
 
-groupRoutes.patch("/members/:id", getGroup,async(req,res)=>{
+const joinGroup =  async(req,res)=>{
             if(req.body.userId!=null){
 
                 res.group.groupMembers=[
@@ -42,18 +43,18 @@ groupRoutes.patch("/members/:id", getGroup,async(req,res)=>{
             } catch (error) {
                 return res.status(500).json({message:error.message})
             }
-})
+}
 
 
 
 
 /******************GET ALL GROUPS****************/
-groupRoutes.post('/',async(req,res)=>{
+const CreateGroup = async(req,res)=>{
     
     let newGroup = new groupModel({
         groupName:req.body.groupName,
         groupLevy:req.body.groupLevy,
-        groupcon:req.body.groupIcon,
+        groupIcon:req.body.groupIcon,
         groupMembers:req.body.groupMembers,
         groupAdmins:req.body.groupAdmins
 
@@ -68,21 +69,21 @@ groupRoutes.post('/',async(req,res)=>{
         return res.status(500).json({message:error.message})
     }
 
-})
+}
 
 /*************GET A GROUP************ */
-groupRoutes.get('/:id',getGroup,async(req,res)=>{
+const getAGroup= async(req,res)=>{
   
         
        res.send(res.group)
 
-})
+}
 
 
 
 /*****************GET ALL GROUP MEMBERS**********/
 
-groupRoutes.get('/',async(req,res)=>{
+const allGroups = async(req,res)=>{
     try {
         
         const groups = await groupModel.find();
@@ -90,14 +91,46 @@ groupRoutes.get('/',async(req,res)=>{
     } catch (error) {
         return res.status(500).json({message:error.message})
     }
-})
+}
 
 
+
+/************GET Group Admin**************/
+
+const getGroupAdmin=async(req,res)=>{
+
+    try {
+     
+       
+     res.send(res.group.groupAdmins)
+     
+    } catch (error) {
+ 
+     return res.status(500).json({message:error.message})
+    }
+}
+ 
+
+/************GET Group Admin**************/
+
+const getGroupMembers=async(req,res)=>{
+
+    try {
+     
+       
+     res.send(res.group.groupMembers)
+     
+    } catch (error) {
+ 
+     return res.status(500).json({message:error.message})
+    }
+}
+ 
 
 
 /************DELETE USER FROM GROUP**************/
 
-groupRoutes.delete('/members/:id',getGroup,async(req,res)=>{
+const deleteUserFromGroup =async(req,res)=>{
 
    try {
     if(req.body.userId!=null){
@@ -112,12 +145,12 @@ groupRoutes.delete('/members/:id',getGroup,async(req,res)=>{
 
     return res.status(500).json({message:error.message})
    }
-})
+}
 
 
-/************DELETE USER FROM GROUP**************/
+/************DELETE Admin FROM GROUP**************/
 
-groupRoutes.delete('/admins/:id',getGroup,async(req,res)=>{
+const deleteAdminFromGroup=async(req,res)=>{
 
     try {
      if(req.body.userId!=null){
@@ -132,35 +165,18 @@ groupRoutes.delete('/admins/:id',getGroup,async(req,res)=>{
  
      return res.status(500).json({message:error.message})
     }
- })
+}
  
 
 
-// MIDDLEWARES
-
-
-async function getGroup(req, res,next){
-    let group
-    try {
-         group= await groupModel.findById(req.params.id);
-
-         if(group ==null) return res.status(500).json({message:"Group not found"})
-        
-        
-    } catch (error) {
-        return res.status(500).json({message:error})
-    }
-
-    res.group=group
-
-    
-    next()
-}
 
 
 
 
-module.exports = groupRoutes
+
+
+
+module.exports = {addAdmin,joinGroup,CreateGroup,getAGroup,allGroups,deleteUserFromGroup,deleteAdminFromGroup,getGroupMembers,getGroupAdmin}
 
 
 

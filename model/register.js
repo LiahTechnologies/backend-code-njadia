@@ -39,7 +39,7 @@ const registrationschema = new mongoose.Schema({
             type: []
     },
     groups:{
-            type:[]
+            type:[],
     },
     socketId:{
         type:String
@@ -47,4 +47,4 @@ const registrationschema = new mongoose.Schema({
 
 })
 
-module.exports= mongoose.model('users',registrationschema)
+module.exports= mongoose.model('Users',registrationschema)
