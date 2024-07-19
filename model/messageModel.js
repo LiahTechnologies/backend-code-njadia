@@ -6,14 +6,14 @@ const mongoose = require('mongoose')
         type: mongoose.Schema.Types.ObjectId,
 
         // type: mongoose.Schema.type.ObjectId,
-        ref:"User",
+        ref:"Users",
         required: true
     },
     receiverId:{
         // type: String,
 
         type: mongoose.Schema.Types.ObjectId,
-        ref:"User",
+        ref:"Users",
         required: true
     },
 
@@ -24,5 +24,5 @@ const mongoose = require('mongoose')
  },{timestamp:true});
 
 
- const Message = mongoose.model("messages",messageSchema);
- module.exports = Message;
+ module.exports = mongoose.model("Messages",messageSchema);
+ 

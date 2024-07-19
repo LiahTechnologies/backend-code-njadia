@@ -4,12 +4,11 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon server.js",
-    "start_chat": "nodemon ./routes/chat_server.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "nodemon server.js"
+    
   },
   "keywords": [],
-  "author": "",
+  "author": "Betrandcliff",
   "license": "ISC",
   "dependencies": {
     "bcryptjs": "^2.4.3",

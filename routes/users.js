@@ -1,7 +1,7 @@
 const express = require('express')
 const routers = express.Router()
 const getUser = require('../middleware/get-user');
-const { getAllUser, User, userByEmail, updateUserName, deleteAll, deleteUser, userChats, userGroups } = require('../controllers/user-controller');
+const { getAllUser, User, userByEmail, updateUserName, deleteAll, deleteUser, userChats, userGroups, updateDetails } = require('../controllers/user-controller');
 // const getUser = require('../middleware/get-user');
 
 
@@ -19,7 +19,7 @@ routers.get('/:email', userByEmail)
 
 // update user
 
-routers.patch('/:id',getUser,updateUserName)
+routers.patch('/:id',getUser,updateDetails)
 
 
 // delete  a user
@@ -40,7 +40,9 @@ routers.get('/chats/:id',getUser,userChats)
 
 // All User Groups
 
-routers.get('/groups/:id',getUser,userGroups)
+routers.get('/groups/:id',userGroups)
+
+// routers.get('/groups/:id',getUser,userGroups)
 
 
 module.exports = routers

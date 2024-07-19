@@ -12,12 +12,13 @@ const registrationschema = new mongoose.Schema({
     email:{
         type: String,
         required:true,
-        // email:true
+        unique:true
 
     },
     tel:{
         type: String,
         required:true
+        
     },
     password:{
         type: String,
@@ -35,12 +36,20 @@ const registrationschema = new mongoose.Schema({
         type: String,
         required:true
     },
-    chats:{
-            type: []
-    },
-    groups:{
-            type:[],
-    },
+    chats:[
+        {
+            type:mongoose.Schema.Types.ObjectId,
+            ref:'Users'
+        }
+    ],
+    groups:[
+        {
+            type:mongoose.Schema.Types.ObjectId,
+            ref:'Groups'
+        }
+    ]
+            
+    ,
     socketId:{
         type:String
     }

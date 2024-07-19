@@ -3,13 +3,13 @@
 
 
 ###
-POST http://localhost:5000/api/auth/signup
+POST http://192.168.0.106:5000/api/auth/signup
 Content-Type: application/json
 
 {
-    "firstName": "manuah",
-    "lastName":"man",
-    "email":"bob@gmail.com",
+    "firstName": "Matthew Henry",
+    "lastName":"John",
+    "email":"matthew@gmail.com",
     "password":"123456",
     "dob":"15/05/1999",
     "selfie":"myself",
@@ -24,7 +24,7 @@ POST http://localhost:5000/api/auth/login
 Content-Type:application/json
 
 {
-    "email":"ju@gmail.com",
+    "email":"cliffsakwebetrand@gmail.com",
     "password":"123456"
 }
 
@@ -44,13 +44,13 @@ GEt http://localhost:5000/api/users
 #Get a single user
 
 ####
-GEt http://localhost:5000/api/users/6658350560a1e40eae8b307d
+GEt http://localhost:5000/api/users/66980f39c533c914a137cd2e
 
 
 
 
 ####
-PATCH http://localhost:5000/api/users/6658350560a1e40eae8b307d
+PATCH http://localhost:5000/api/users/668683c2d82f350ed0687e82
 Content-Type: application/json
 
 {
@@ -60,10 +60,23 @@ Content-Type: application/json
 
 
 ####
-DELETE  http://localhost:5000/api/users/6658350560a1e40eae8b307d
+DELETE  http://localhost:5000/api/users/668fcf680ae6251730847328
 
 
 
+# Get user chats
+
+###
+
+
+GET http://localhost:5000/api/users/chats/668f05d465472ed5b975ea71
+
+
+# Get user groups
+
+###
+
+GET http://localhost:5000/api/users/groups/66910153811265ee050ba667 
 
 
 
@@ -86,17 +99,17 @@ POST http://localhost:5000/api/groups
 Content-Type: application/json
 
 {
-    "groupName":"React developer",
+    "groupName":" developer",
     "groupLevy":"30000",
     "groupIcon":"icon.png",
     "groupMembers":[],
-    "groupAdmins":"Paula89797snsinos9"
+    "groupAdmins":["668683c2d82f350ed0687e82"]
 }
 
 #Get group admins
 
 ###
-GET http://localhost:5000/api/groups/admins/665847c0483c9d3318c5220d
+GET http://localhost:5000/api/groups/admins/669101cfe4075ef067eed15e
 
 
 
@@ -104,13 +117,13 @@ GET http://localhost:5000/api/groups/admins/665847c0483c9d3318c5220d
 #Get group members
 
 ###
-GET http://localhost:5000/api/groups/members/665847c0483c9d3318c5220d
+GET http://localhost:5000/api/groups/members/669101cfe4075ef067eed15e
 
 
 #add  group admin
 
 ###
-PATCH  http://localhost:5000/api/groups/admins/665847c0483c9d3318c5220d
+PATCH  http://localhost:5000/api/groups/admins/665895e936f1cde734bceecc
 Content-Type: application/json
 
 {
@@ -157,7 +170,7 @@ Content-Type: application/json
 
 
 ###
-GEt http://localhost:5000/api/user-chats/665835b660a1e40eae8b307e
+GEt http://localhost:5000/api/user-chats/665ed23c2a1391126d0de027
 
 
 
@@ -165,7 +178,7 @@ GEt http://localhost:5000/api/user-chats/665835b660a1e40eae8b307e
 
 ###
 
-PATCH  http://localhost:5000/api/user-chats/chats/6658575e6fb7ae68270596d0
+PATCH  http://localhost:5000/api/user-chats/chats/665ed23c2a1391126d0de027
 Content-Type: application/json
 
 {
@@ -197,3 +210,24 @@ Content-Type: application/json
 {
     "message":"Hello boy"
 }
+
+
+#Get messages
+
+###
+GET http://localhost:5000/api/messages/665858adec9c9c696f2cbd52
+
+
+
+
+#Get messages
+
+###
+POST   http://localhost:5000/api/messages/init
+Content-Type: application/json
+
+{
+    "uid":"66980f39c533c914a137cd2e",
+    "groupId":"66980f4fc533c914a137cd2f"
+}
+

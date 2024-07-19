@@ -1,11 +1,12 @@
 // const registrationschema = require('../model/register')
+const { response } = require('express')
 const registrationModel = require('../model/register')
 const generateTokenSetCookie = require('../utils/generate_token')
 const Bcrypt = require('bcryptjs')
 
 
 const signup =async (req,res)=>{
-    console.log(req.body)
+   
     const salt = await Bcrypt.genSalt(10)
     const hashpass = await Bcrypt.hash(req.body.password,salt)
 
@@ -33,7 +34,16 @@ const signup =async (req,res)=>{
              generateTokenSetCookie(newUser._id,res)
 
              const activeUser=   await newUser.save()
-             res.status(201).json(activeUser)
+             const {_id,firstName,lastName, email}=activeUser
+             const user_info={
+                "userId":_id,
+                "firstName":firstName,
+                "lastName":lastName,
+                "email":email,
+                "token":"token.jwt"
+
+             }
+             res.status(201).json(user_info)
         }
 
    
@@ -65,11 +75,18 @@ const login =async (req,res)=>{
         console.log(`user password status ${isPasswordCorrect}`)
         if(!user || !isPasswordCorrect) return res.status(400).json({error:"Invalid user data"})
 
-        generateTokenSetCookie(user._id,res)
+       generateTokenSetCookie(user._id,res)
 
+        // console.log("the token is ",  response.token)
+
+        console.log("login user", user)
         res.status(200).json({
-            _id:user._id,
-            fullname:user.firstname,
+            userId:user._id,
+            firstName:user.firstName,
+            lastName:user.lastName,
+            email:user.email,
+            token:"token.token"
+
 
         })
 

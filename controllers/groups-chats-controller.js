@@ -1,6 +1,9 @@
 const express = require('express')
 const groupRoutes = express.Router()
-const groupModel = require('../model/group')
+const groupModel = require('../model/group');
+const { updateDetails } = require('./user-controller');
+const registrationModel = require('../model/register');
+
 
 /**********ADD ADMINS TO GROUP********** */
 
@@ -34,7 +37,20 @@ const joinGroup =  async(req,res)=>{
                     ... res.group.groupMembers,
                     req.body.userId
                 ];
+
             }
+
+        const currentUser = await registrationModel.findById(req.body.userId)
+        console.log(currentUser, "THIS IS THE USER")
+        currentUser.chats =  [...currentUser.chats,result['_id']]
+
+        currentUser.save()
+
+            let resp = getUser(req.body.userId);
+
+            resp.users.chats = [...resp.users.chats,req.body.userId]
+
+            resp.users.save()
 
             try {
                 const updateResult = await res.group.save()
@@ -50,22 +66,42 @@ const joinGroup =  async(req,res)=>{
 
 /******************GET ALL GROUPS****************/
 const CreateGroup = async(req,res)=>{
+    const {groupMembers}= req.body
+
+
+
+    const validMembers = await registrationModel.find({_id:{$in:groupMembers}})
+
+    if(validMembers.length !==groupMembers.length){
+        return res.status(400).json({"message":"Some users are not valid users"})
+    }
+
+
     
-    let newGroup = new groupModel({
-        groupName:req.body.groupName,
-        groupLevy:req.body.groupLevy,
-        groupIcon:req.body.groupIcon,
-        groupMembers:req.body.groupMembers,
-        groupAdmins:req.body.groupAdmins
-
-    })
-
     try {
-        const result = await newGroup.save()
 
+        let newGroup = new groupModel({
+            groupName:req.body.groupName,
+            groupLevy:req.body.groupLevy,
+            groupIcon:req.body.groupIcon,
+            groupMembers:req.body.groupMembers,
+            groupAdmins:req.body.groupAdmins
+    
+        }) 
+
+        const result = await newGroup.save()
+        console.log(result, "this the current result")
+        
+        const currentUser = await registrationModel.findById(req.body.groupAdmins)
+        console.log(currentUser, "THIS IS THE USER")
+        currentUser.groups =  [...currentUser.groups,result['_id']]
+
+        currentUser.save()
+        console.log($result["id"], "this the current Id")
         res.status(201).json(result)
         
     } catch (error) {
+        console.log("GROUP CREATE ERROR MESSAGE",error.message.toString())
         return res.status(500).json({message:error.message})
     }
 
@@ -135,7 +171,8 @@ const deleteUserFromGroup =async(req,res)=>{
    try {
     if(req.body.userId!=null){
         res.group.groupMembers= await res.group.groupMembers.filter(userId=>userId!=req.body.userId)
-      
+   
+        
     }
 
     const response = await res.group.save()

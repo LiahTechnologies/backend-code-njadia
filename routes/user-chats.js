@@ -1,13 +1,13 @@
 const express = require('express')
 
-const { getAChat, addNewchat, deleteChat, getAllChats, getUserGroups, getAGroup, addNewGroup } = require('../controllers/user-chats-controller')
+const { getAChat, addNewchat, deleteChat, getUserChats, getUserGroups, getAGroup, addNewGroup } = require('../controllers/user-chats-controller')
 const getUser = require('../middleware/get-user')
 const chatsRouters = express.Router()
 
 
 
 /*************GET ALL CHATS************ */
-chatsRouters.get('/:id',getUser,getAllChats)
+chatsRouters.get('/:id',getUser,getUserChats)
 
 
 /**********ADD NEW CHAT********** */

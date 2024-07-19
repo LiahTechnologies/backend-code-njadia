@@ -57,10 +57,10 @@ const addNewGroup= async(req,res)=>{
 
 
 /*************GET A CHATS************ */
-const getAllChats = async(req,res)=>{
+const getUserChats = async(req,res)=>{
   
         
-       res.send(res.users.chats)
+       res.send(res.users.poplate('chats'))
 
 }
 
@@ -87,7 +87,7 @@ const getAGroup = async(req,res)=>{
 /************DELETE A USER GROUPS **************/
 const getUserGroups = async(req,res)=>{
      
-    res.send(res.users.groups)
+    res.send(res.users.groups.poplate("groups"))
 
 }
 
@@ -115,4 +115,4 @@ const deleteChat = async(req,res)=>{
 
 
 
-module.exports = {addNewchat,getAllChats,deleteChat,getAChat,getUserGroups,getAGroup,addNewGroup}
+module.exports = {addNewchat,getUserChats,deleteChat,getAChat,getUserGroups,getAGroup,addNewGroup}

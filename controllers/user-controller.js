@@ -22,15 +22,34 @@ const userByEmail = async(req,res)=>{
    res.send(user)
 }
 
-const updateUserName = async(req,res)=>{
+const updateDetails = async(req,res)=>{
+
+
     if(req.body.firstName!=null){
         res.users.firstName=req.body.firstName
      }
   
+
      if(req.body.lastName!=null){
         res.users.lastName=req.body.lastName
      }
-  
+
+
+     if(req.body.email!=null){
+        res.users.email=req.body.email
+     }
+
+
+    //  if(req.body.chats!=null){
+    //     res.users.chats=[...res.users.chats,req.body.chats]
+    //  }
+
+
+    //  if(req.body.groups!=null){
+    //     res.users.groups=[...res.users.groups,req.body.groups]
+    //  }
+
+
      try {
   
         console.log(`this is  ${res.users}`)
@@ -58,16 +77,19 @@ const deleteAll = async(req,res)=>{
 
 }
 
-const userChats = async(req,res)=>{
-    const result = res.users.chats.populate("Users")
 
-    res.send(result)
+const userChats = async(req,res)=>{
+    const result = await registrationModel.findById(req.params.id).populate('chats');
+
+    res.send(result.chats)
 }
 
 const userGroups = async(req,res)=>{
-    const result = res.users.chats.populate("groups")
+    const result = await registrationModel.findById(req.params.id).populate('groups');
 
-    res.send(result)
+    // const result =  await res.users.populate('groups')
+    console.log(result,"users and groups" )
+    res.send(result.groups)
 }
 
-module.exports= {getAllUser,User,userByEmail,updateUserName,deleteUser,deleteAll,userChats,userGroups}
+module.exports= {getAllUser,User,userByEmail,updateDetails,deleteUser,deleteAll,userChats,userGroups}
