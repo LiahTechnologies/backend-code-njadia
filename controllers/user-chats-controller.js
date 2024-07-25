@@ -23,7 +23,11 @@ const addNewchat= async(req,res)=>{
         }
 
         const updateResult = await res.users.save()
-        res.json(updateResult)
+        console.log("THIS THE NEW CHAT", updateResult)
+        if(updateResult)
+            res.status(500).json({"message":true})
+        else
+            res.status(500).json({"message":false})
         
     } catch (error) {
         return res.status(500).json({message:error.message})

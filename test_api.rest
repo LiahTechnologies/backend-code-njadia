@@ -92,6 +92,28 @@ GET http://localhost:5000/api/users/groups/66910153811265ee050ba667
 GET http://localhost:5000/api/groups
 
 
+
+#Find Group by name
+
+###
+Get http://localhost:5000/api/groups/Liah
+
+
+
+# Find a member in a group
+
+###
+post http://localhost:5000/api/groups/member/669fb9712ec164b0e9b7ce67
+Content-Type: application/json
+
+{
+    "id":"669fb9582ec164b0e9b7ce66"
+}
+
+
+
+
+
 #create  a group
 
 ###
@@ -99,7 +121,7 @@ POST http://localhost:5000/api/groups
 Content-Type: application/json
 
 {
-    "groupName":" developer",
+    "groupName":"Flutter-",
     "groupLevy":"30000",
     "groupIcon":"icon.png",
     "groupMembers":[],
@@ -123,33 +145,35 @@ GET http://localhost:5000/api/groups/members/669101cfe4075ef067eed15e
 #add  group admin
 
 ###
-PATCH  http://localhost:5000/api/groups/admins/665895e936f1cde734bceecc
+PATCH  http://localhost:5000/api/groups/admins/66a0ad2fe2008f1ad5726a3b
 Content-Type: application/json
 
 {
-    "userId":"johon2028498m"
+    "userId":"66a0acbde2008f1ad5726a3s"
 }
 
 
 #add  group member
 
 ###
-PATCH  http://localhost:5000/api/groups/members/665847c0483c9d3318c5220d
+PATCH  http://localhost:5000/api/groups/members/66a0ad2fe2008f1ad5726a3b
 Content-Type: application/json
 
 {
-    "userId":"johon2028498m"
+     "userId":"66a0aeb2e2008f1ad5726a3d"
 }
 
+# 66a0acbde2008f1ad5726a3a
 
+# 66a0aeb2e2008f1ad5726a3d
 #Delete  group member
 
 ###
-DELETE   http://localhost:5000/api/groups/members/6655ff54577ac03095c13d08
+DELETE   http://localhost:5000/api/groups/members/66a0ad2fe2008f1ad5726a3b
 Content-Type: application/json
 
 {
-    "userId":"johon2028498m"
+    "userId":"66a0aeb2e2008f1ad5726a3d"
 }
 
 
@@ -178,11 +202,11 @@ GEt http://localhost:5000/api/user-chats/665ed23c2a1391126d0de027
 
 ###
 
-PATCH  http://localhost:5000/api/user-chats/chats/665ed23c2a1391126d0de027
+PATCH  http://localhost:5000/api/user-chats/chats/66a0acbde2008f1ad5726a3a
 Content-Type: application/json
 
 {
-    "userId":"jamesqu09s809ss"
+    "userId":"66a0aeb2e2008f1ad5726a3d"
 }
 
 
@@ -227,7 +251,7 @@ POST   http://localhost:5000/api/messages/init
 Content-Type: application/json
 
 {
-    "uid":"66980f39c533c914a137cd2e",
-    "groupId":"66980f4fc533c914a137cd2f"
+    "uid":"669f76936a056a2dfbae170c",
+    "groupId":"669f76bc6a056a2dfbae170d"
 }
 

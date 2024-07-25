@@ -3,6 +3,7 @@ const groupRoutes = express.Router()
 const groupModel = require('../model/group');
 const { updateDetails } = require('./user-controller');
 const registrationModel = require('../model/register');
+const getUser = require("../middleware/get-user")
 
 
 /**********ADD ADMINS TO GROUP********** */
@@ -10,10 +11,17 @@ const registrationModel = require('../model/register');
 const addAdmin = async(req,res)=>{
     if(req.body.userId!=null){
 
-        res.group.groupAdmins=[
-            ... res.group.groupAdmins,
-            req.body.userId
-        ];
+        let checkResult= res.group.groupAdmins.filter(e=>e==req.body.userId)
+
+        if(checkResult!=null || checkResult!=undefined)
+            return res.json({"message":"Admin already exist"})
+        else{
+            res.group.groupAdmins=[
+                ... res.group.groupAdmins,
+                req.body.userId
+            ];
+        }
+       
     }
 
     try {
@@ -30,32 +38,59 @@ const addAdmin = async(req,res)=>{
 
 /**********ADD USER TO GROUP********** */
 
-const joinGroup =  async(req,res)=>{
+const joinGroup =  async(req,res)=>{ 
+    let checkResult=null
             if(req.body.userId!=null){
+                // check if user exist
 
-                res.group.groupMembers=[
-                    ... res.group.groupMembers,
-                    req.body.userId
-                ];
+                    checkResult= res.group.groupMembers.filter(e=>e==req.body.userId)
+                    // console.log("NEW USER IS ", checkResult.length==0)
+                    if(checkResult.length==0){
+                        res.group.groupMembers=[
+                            ... res.group.groupMembers,
+                            req.body.userId
+                        ];
+
+                        console.log("ERROR AT THIS LEVEL")
+
+                    }
+                       
+                    else{
+                        return res.json({"message":"User already exist"})
+                    }
+                    
+
+              
 
             }
 
+        console.log("CODE IS REACHING HEAR")
         const currentUser = await registrationModel.findById(req.body.userId)
+        
         console.log(currentUser, "THIS IS THE USER")
-        currentUser.chats =  [...currentUser.chats,result['_id']]
+        
+        currentUser.groups =  [...currentUser.groups,req.params.id]
 
         currentUser.save()
 
-            let resp = getUser(req.body.userId);
 
-            resp.users.chats = [...resp.users.chats,req.body.userId]
 
-            resp.users.save()
+            // let resp = getUser(req.body.userId);
+
+            // resp.users.chats = [...resp.users.chats,req.body.userId]
+
+            // resp.users.save()
+
+
 
             try {
-                const updateResult = await res.group.save()
-                res.json(updateResult)
-                
+                const updatedResult = await res.group.save()
+                // return res.send(updatedResult)
+                if(updatedResult.length!=0)
+                    res.status(200).json({"message":true})
+                else
+                 res.status(200).json({"message":false})
+                   
             } catch (error) {
                 return res.status(500).json({message:error.message})
             }
@@ -66,9 +101,12 @@ const joinGroup =  async(req,res)=>{
 
 /******************GET ALL GROUPS****************/
 const CreateGroup = async(req,res)=>{
+
+    console.log("TRYING TO CREATE GROUP");
+
     const {groupMembers}= req.body
 
-
+    console.log("TRYING TO CREATE GROUP");
 
     const validMembers = await registrationModel.find({_id:{$in:groupMembers}})
 
@@ -76,9 +114,15 @@ const CreateGroup = async(req,res)=>{
         return res.status(400).json({"message":"Some users are not valid users"})
     }
 
-
+        console.log("VERIED USER")
     
     try {
+        let groupExist = groupModel.findOne({"groupName":req.body.groupName});
+        
+        console.log(groupExist)
+
+        if(groupExist.length!=null)
+            return res.status(500).json({'message':"Group Name already exist"})
 
         let newGroup = new groupModel({
             groupName:req.body.groupName,
@@ -147,7 +191,7 @@ const getGroupAdmin=async(req,res)=>{
 }
  
 
-/************GET Group Admin**************/
+/************GET Group Members**************/
 
 const getGroupMembers=async(req,res)=>{
 
@@ -155,6 +199,22 @@ const getGroupMembers=async(req,res)=>{
      
        
      res.send(res.group.groupMembers)
+     
+    } catch (error) {
+ 
+     return res.status(500).json({message:error.message})
+    }
+}
+ 
+/***************** */
+const getGroupMember=async(req,res)=>{
+
+    try {
+     let result = res.group.groupMembers.find(e=>e==req.body.id)
+       if(result!=null)
+        res.send(true)
+       else
+       res.send(false)
      
     } catch (error) {
  
@@ -213,7 +273,7 @@ const deleteAdminFromGroup=async(req,res)=>{
 
 
 
-module.exports = {addAdmin,joinGroup,CreateGroup,getAGroup,allGroups,deleteUserFromGroup,deleteAdminFromGroup,getGroupMembers,getGroupAdmin}
+module.exports = {addAdmin,joinGroup,CreateGroup,getAGroup,allGroups,deleteUserFromGroup,deleteAdminFromGroup,getGroupMembers,getGroupAdmin, getGroupMember}
 
 
 

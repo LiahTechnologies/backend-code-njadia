@@ -1,7 +1,7 @@
 const express = require('express')
 const groupRoutes = express.Router()
-const { deleteAdminFromGroup, deleteUserFromGroup, getAllGroup, getAGroup, allGroups, CreateGroup, joinGroup, addAdmin, getGroupMembers, getGroupAdmin } = require('../controllers/groups-chats-controller');
-const getGroup = require('../middleware/get-user-group');
+const { deleteAdminFromGroup, deleteUserFromGroup, getAllGroup, getAGroup, allGroups, CreateGroup, joinGroup, addAdmin, getGroupMembers, getGroupAdmin, getGroupMember } = require('../controllers/groups-chats-controller');
+const {getGroup,getGroupByName} = require('../middleware/get-user-group');
 
 /**********ADD ADMINS TO GROUP********** */
 groupRoutes.patch("/admins/:id", getGroup,addAdmin)
@@ -20,7 +20,15 @@ groupRoutes.patch("/members/:id", getGroup,joinGroup)
 groupRoutes.post('/',CreateGroup)
 
 /*************GET A GROUP************ */
-groupRoutes.get('/:id',getGroup,getAGroup)
+groupRoutes.get('/:groupName',getGroupByName,getAGroup)
+
+
+
+
+/*************GET A GROUP Member************ */
+groupRoutes.post('/member/:id',getGroup,getGroupMember)
+
+
 
 
 
@@ -30,12 +38,12 @@ groupRoutes.get('/',allGroups)
 
 
 
-/************DELETE USER FROM  A GROUP**************/
+/************Get USER FROM  A GROUP**************/
 
 groupRoutes.get('/members/:id',getGroup,getGroupMembers)
 
 
-/************DELETE ADMIN FROM GROUP**************/
+/************Get ADMIN FROM GROUP**************/
 
 groupRoutes.get('/admins/:id',getGroup,getGroupAdmin)
 

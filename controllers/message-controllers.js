@@ -4,7 +4,8 @@ const groupModel = require('../model/group');
 const Users = require('../model/register');
 
 const Message = require('../model/messageModel')
-const { getRecieverSocketId } = require("../socket/socket")
+const { getRecieverSocketId } = require("../socket/socket");
+const { Socket } = require("socket.io");
 
 
 
@@ -110,30 +111,36 @@ const { getRecieverSocketId } = require("../socket/socket")
 
 
 const sendGroupMessage =async (req, res)=>{
-  console.log("THE GROUP MESSAGE PART")
+
+//   console.log("THE GROUP MESSAGE PART")
+
     try {
     
-        const {message,chatId:groupId} = req.body
-        console.log("group message",message)
+        const {message,chatId:groupId,replyMessage, replySender} = req.body
+
+        // console.log("group message",message)
 
         // const { id:groupId}  = req.params
+
         const senderId = req.body.messageSender
    
 
-        console.log("User id",senderId)
+        // console.log("User id",senderId)
            // create a message
     
        const newMessage = new Message({
            senderId,
            receiverId:groupId,
-           message
+           message,
+           replyMessage,
+           replySender,
        })
     
         await newMessage.save()
 
         const messageData = await Message.findById(newMessage._id).populate("senderId","id, email, firstName, lastName")
 
-        console.log(newMessage)
+        // console.log(newMessage)
 
         await groupModel.findByIdAndUpdate(groupId,{
             $push:{messages:newMessage._id}
@@ -144,20 +151,32 @@ const sendGroupMessage =async (req, res)=>{
         const finalData = {...messageData._doc,groupId:group._id}
         
         if(group && group.groupMembers){
-            console.log(group.groupMembers,"members")
+
+            // console.log(group.groupMembers,"members")
+
             group.groupMembers.forEach(element => {
-                console.log("EVENT IS BEING TRIGGERED",element._id)
+
+                // console.log("EVENT IS BEING TRIGGERED",element._id)
+
                 const memberSocketId=getRecieverSocketId(element._id.toString())
+
                 console.log(memberSocketId,"THIS IS THE SOCKET ID")
+
                 if(memberSocketId){
-                    IO.to(memberSocketId).emit("newGroupMessage",finalData);
+
+                    console.log("SENT BACK MESSAGE IS ", newMessage)
+                    // Socket.on("newGroupMessage",newMessage)
+
+                    IO.to(memberSocketId).emit("newGroupMessage",newMessage);
                       
                 }
+
+                console.log("SENT BACK MESSAGE IS ", newMessage)
             });
         }
-    console.log(finalData,"this is the message")
+    // console.log(finalData,"this is the message")
 
-    res.status(201).json(finalData) 
+    res.status(201).json(newMessage) 
     
        }
     

@@ -20,6 +20,12 @@ const mongoose = require('mongoose')
     message:{
         type: String,
         required: true
+    },
+    replySender:{
+            type: String
+    },
+    replyMessage:{
+        type: String
     }
  },{timestamp:true});
 
