@@ -1,31 +1,23 @@
 const userModel = require('../model/register')
 
 
-const  getUser =async(req, res,next)=>{
-    let users
+const  checkIfYourExist =async(req, res,next)=>{
+    let user
     try {
-        console.log("USER PARAMS ", req.params.id)
          const result = await userModel.findById(req.params.id);
 
          if(result ==null) return res.send({message:"User not found"})
-
-        users=result
-
-        // console.log(`Current user ${users}`)
+        user=true
+        //  console.log(`Current user ${users}`)
         
     } catch (error) {
         return res.status(500).json({message:error})
     }
 
-res.users=users
-
+res.user=user
 next()
 
 
 }
 
-
-
-
-
-module.exports = getUser
+module.exports = checkIfYourExist

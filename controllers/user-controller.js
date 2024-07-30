@@ -14,6 +14,7 @@ const getAllUser = async(req,res)=>{
 
 
 const User = async(req,res)=>{
+    
     res.send(res.users)
 }
 

@@ -44,7 +44,7 @@ GEt http://localhost:5000/api/users
 #Get a single user
 
 ####
-GEt http://localhost:5000/api/users/66980f39c533c914a137cd2e
+GEt http://localhost:5000/api/users/66a916d0f0649f368c5062fc
 
 
 
@@ -57,10 +57,11 @@ Content-Type: application/json
     "firstName":"Betrandcliff",
     "lastName":"Sakwe"
 }
-
+X-Http-Method-Override: 
 
 ####
-DELETE  http://localhost:5000/api/users/668fcf680ae6251730847328
+DELETE  http://localhost:5000/api/users/66a917cbf0649f368c5062ff
+
 
 
 
@@ -69,7 +70,7 @@ DELETE  http://localhost:5000/api/users/668fcf680ae6251730847328
 ###
 
 
-GET http://localhost:5000/api/users/chats/668f05d465472ed5b975ea71
+GET http://localhost:5000/api/users/chats/66a2137e6ffa7b10305f1554
 
 
 # Get user groups
@@ -194,7 +195,7 @@ Content-Type: application/json
 
 
 ###
-GEt http://localhost:5000/api/user-chats/665ed23c2a1391126d0de027
+GEt http://localhost:5000/api/user-chats/66a2137e6ffa7b10305f1554
 
 
 
@@ -255,3 +256,13 @@ Content-Type: application/json
     "groupId":"669f76bc6a056a2dfbae170d"
 }
 
+
+
+###
+POST   http://localhost:5000/api/messages/
+Content-Type: application/json
+
+{
+    "uid":"66a238f558037cbe8683188b",
+    "receiverId":"66a214176ffa7b10305f1555"
+}

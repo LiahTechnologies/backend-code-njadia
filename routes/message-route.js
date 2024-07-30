@@ -5,8 +5,8 @@ const {sendMessage,getMessages,sendGroupMessage,fetchGroupMessage, fetchInitalMe
 const getUser = require('../middleware/get-user')
 
 
-routers.post('/send/', protectRoute,sendMessage)      
-routers.get('/',protectRoute,getMessages)
+routers.post('/send/:uid',sendMessage)      
+routers.post('/',getMessages)
 routers.post('/group/send/',sendGroupMessage)
 routers.post('/group/',fetchGroupMessage)
 routers.post('/init',fetchInitalMessage)

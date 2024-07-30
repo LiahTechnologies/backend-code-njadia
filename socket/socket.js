@@ -1,5 +1,7 @@
 // const Server = require('socket.io')
 const groupModel = require('../model/group');
+const Conversation = require("../model/conversationMode")
+
 
 const http = require('http')
 const express = require('express')
@@ -88,16 +90,69 @@ io.on('connection',(socket)=>{
 
 
     // Private messaging
-    socket.on('privateMessage', (data) => {
-      const { content, sender, recipient } = data;
-      const message = new Message({ content, sender, recipient });
-      message.save((err) => {
-        if (err) return console.error(err);
-        if (users[recipient]) {
-          io.to(users[recipient]).emit('privateMessage', message);
-        }
-        io.to(users[sender]).emit('privateMessage', message);
-      });
+    socket.on('privateMessage', async(data) => {
+        console.log("PRIVATE CHAT ",data)
+      const {chatId:receiverId,message, messageSender:senderId}=data 
+      
+      let conversation = await Conversation.findOne({participants: {$all: [senderId, receiverId] }, })
+        
+       if(!conversation){ 
+    
+           conversation = await Conversation.create({
+           participants:[senderId,receiverId]
+    
+       // message [ this is not necessary because the default will be empty]
+           })}
+    
+    
+           // create a message
+    
+       const newMessage = new Message({
+           senderId,
+           receiverId,
+           message
+       })
+    
+       if(newMessage) conversation.messages.push(newMessage._id)
+    
+       // This approach of saving wiil take more execution time
+       // await conservation.save()
+    //    await newMessage.save()
+       
+       Promise.all([conversation.save(), newMessage.save()])
+       
+       const recieverSocketId = getRecieverSocketId(receiverId)
+       const senderSocketId = getRecieverSocketId(senderId)
+    
+       if(recieverSocketId){
+           // O.to.emit is used to send  messages to specific clients
+           io.to(recieverSocketId).emit("privateChat",newMessage);
+           console.log("PRIVATE CHAT SENT TO RECEIVER", recieverSocketId)
+          
+       }
+       
+       if(senderSocketId){
+        io.to(senderSocketId).emit("privateChat",newMessage);
+        console.log("PRIVATE CHAT SENT TO SENDER", senderSocketId)
+       }
+
+
+
+
+
+
+      // const { content, sender, recipient } = data;
+      // const message = new Message({ content, sender, recipient });
+      // message.save((err) => {
+      //   if (err) return console.error(err);
+      //   if (users[recipient]) {
+      //     io.to(users[recipient]).emit('privateMessage', message);
+      //   }
+      //   io.to(users[sender]).emit('privateMessage', message);
+      // });
+
+
+
     });
   
 
@@ -113,7 +168,9 @@ io.on('connection',(socket)=>{
     socket.on('groupMessage', async (data) => {
       console.log("sent message",data)
       const { message, messageSender:senderId, chatId:receiverId } = data;
+
       const content =  await new Message({ message, senderId, receiverId});
+      
       await content.save(async(err) => {
 
         if (err) return console.error(err);
@@ -132,16 +189,22 @@ io.on('connection',(socket)=>{
         const finalData = {...messageData._doc,groupId:group._id}
         
         if(group && group.groupMembers){
+
           console.log(group.groupMembers,"members")
+
+
           group.groupMembers.forEach(element => {
+
               console.log("EVENT IS BEING TRIGGERED",element._id)
               console.log("CONNECTED USERS",users)
+
               const memberSocketId=getRecieverSocketId(element._id.toString())
               console.log(memberSocketId,"THIS IS THE SOCKET ID")
+
               if(memberSocketId){
                   socket.emit("OnGroup",finalData)
-                  socket.to(memberSocketId).emit("OnGroup",finalData);
-                  console.log("message emitted", finalData)
+                  socket.to(memberSocketId).emit("OnGroup",content);
+                  console.log("message emitted", content)
                     
               }
           });

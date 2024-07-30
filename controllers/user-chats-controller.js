@@ -15,15 +15,32 @@ const addNewchat= async(req,res)=>{
 
         if(req.body.userId!=null){
 
+            // check if user exist
+
+            const chatExist = res.users.chats.filter((e)=> e==req.body.userId)
+            console.log(" the value of user exist", chatExist)
+            if(chatExist.length>0) return res.status(500).json({"message":false})
+
             res.users.chats=unique( [
                 ...res.users.chats,
                 req.body.userId
             ])
-        
+
+            // add chats to  useers list of chats  
+
+            const receiver = await userModel.findById(req.body.userId);
+            
+            receiver.chats=unique([
+                ...receiver.chats,
+                res.users._id
+            ])
+
+           await receiver.save()
         }
 
         const updateResult = await res.users.save()
         console.log("THIS THE NEW CHAT", updateResult)
+
         if(updateResult)
             res.status(500).json({"message":true})
         else
@@ -49,6 +66,7 @@ const addNewGroup= async(req,res)=>{
                 req.body.groupId
             ])
             
+            
         }
 
         const updateResult = await res.users.save()
@@ -62,9 +80,15 @@ const addNewGroup= async(req,res)=>{
 
 /*************GET A CHATS************ */
 const getUserChats = async(req,res)=>{
-  
+    let data
+        if(res.user){
+
+         data =   await userModel.findById(req.params.id).populate("chats","-groups")
         
-       res.send(res.users.poplate('chats'))
+        console.log("THE USER IS DATA", data)
+        }
+       res.send(data.chats)
+
 
 }
 

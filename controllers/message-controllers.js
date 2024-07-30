@@ -12,8 +12,10 @@ const { Socket } = require("socket.io");
   const sendMessage =async (req, res)=>{
   
     try {
+
+
     
-        const {uid:receiverId,message} = req.body
+        const {receiverId,message} = req.body
         const senderId = req.body.messageSender
     
 
@@ -53,12 +55,14 @@ const { Socket } = require("socket.io");
     
        if(recieverSocketId){
            // O.to.emit is used to send  messages to specific clients
-           IO.to(recieverSocketId).emit("newMessage",newMessage);
+           IO.to(recieverSocketId).emit("privateChat",newMessage);
+           console.log("PRIVATE CHAT SENT TO RECEIVER", recieverSocketId)
           
        }
        
        if(senderSocketId){
-        IO.to(senderSocketId).emit("newMessage",newMessage);
+        IO.to(senderSocketId).emit("privateChat",newMessage);
+        console.log("PRIVATE CHAT SENT TO SENDER", senderSocketId)
        }
 
        res.status(201).json(newMessage)
@@ -78,22 +82,24 @@ const { Socket } = require("socket.io");
 
 
     try {
+        // const user = await Users.findById(req.params.uid).select("-password")
 
-        const {receiverId:userToChatId}= req.body
+        const {receiverId:userToChatId,uid}= req.body
         
         // const {id:userToChatId} = req.params
-        const senderId = req.user._id
+        const senderId = uid
+         console.log("CODE REACHING THIS LEVEL", uid)
 
         const conversation = await Conversation.findOne({
             participants: {$all:[senderId,userToChatId]},
 
         }).populate("messages")
 
-        
+        console.log("SECOD STAGE OF REACHING CODE ",userToChatId)
         if(!conversation)
             res.status(200).json([])
 
-
+        else
         res.status(200).json(conversation.messages)
 
     } 
