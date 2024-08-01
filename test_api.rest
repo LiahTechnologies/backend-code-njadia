@@ -3,7 +3,7 @@
 
 
 ###
-POST http://192.168.0.106:5000/api/auth/signup
+POST http://192.168.0.104:5000/api/auth/signup
 Content-Type: application/json
 
 {
@@ -24,7 +24,7 @@ POST http://localhost:5000/api/auth/login
 Content-Type:application/json
 
 {
-    "email":"cliffsakwebetrand@gmail.com",
+    "email":"matthew@gmail.com",
     "password":"123456"
 }
 
@@ -132,7 +132,7 @@ Content-Type: application/json
 #Get group admins
 
 ###
-GET http://localhost:5000/api/groups/admins/669101cfe4075ef067eed15e
+GET http://localhost:5000/api/groups/admins/66ab8010d5a9212d81250bfd
 
 
 
@@ -140,7 +140,7 @@ GET http://localhost:5000/api/groups/admins/669101cfe4075ef067eed15e
 #Get group members
 
 ###
-GET http://localhost:5000/api/groups/members/669101cfe4075ef067eed15e
+GET http://localhost:5000/api/groups/members/66ab8010d5a9212d81250bfd
 
 
 #add  group admin

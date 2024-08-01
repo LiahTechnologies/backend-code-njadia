@@ -40,7 +40,7 @@ groupRoutes.get('/',allGroups)
 
 /************Get USER FROM  A GROUP**************/
 
-groupRoutes.get('/members/:id',getGroup,getGroupMembers)
+groupRoutes.get('/members/:id',getGroupMembers)
 
 
 /************Get ADMIN FROM GROUP**************/

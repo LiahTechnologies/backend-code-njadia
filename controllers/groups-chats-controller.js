@@ -197,8 +197,8 @@ const getGroupMembers=async(req,res)=>{
 
     try {
      
-       
-     res.send(res.group.groupMembers)
+       const members =await groupModel.findById(req.params.id).populate("groupMembers")
+     res.send(members.groupMembers)
      
     } catch (error) {
  

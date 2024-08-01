@@ -16,6 +16,12 @@ const mongoose = require('mongoose')
         ref:"Users",
         required: true
     },
+    messageSender:{
+            type:String,
+    },
+    messageReceiver:{
+        type:String
+    },
 
     message:{
         type: String,
@@ -24,6 +30,7 @@ const mongoose = require('mongoose')
     replySender:{
             type: String
     },
+
     replyMessage:{
         type: String
     }

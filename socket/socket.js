@@ -167,9 +167,9 @@ io.on('connection',(socket)=>{
 
     socket.on('groupMessage', async (data) => {
       console.log("sent message",data)
-      const { message, messageSender:senderId, chatId:receiverId } = data;
+      const { message, messageSender,senderId, receiverId, messageReceiver,replyMessage, replySender } = data;
 
-      const content =  await new Message({ message, senderId, receiverId});
+      const content =  await new Message({ message, senderId, receiverId,messageSender, messageReceiver,replySender, replyMessage});
       
       await content.save(async(err) => {
 
@@ -196,13 +196,15 @@ io.on('connection',(socket)=>{
           group.groupMembers.forEach(element => {
 
               console.log("EVENT IS BEING TRIGGERED",element._id)
+
               console.log("CONNECTED USERS",users)
 
               const memberSocketId=getRecieverSocketId(element._id.toString())
+              
               console.log(memberSocketId,"THIS IS THE SOCKET ID")
 
               if(memberSocketId){
-                  socket.emit("OnGroup",finalData)
+                  socket.emit("OnGroup",content)
                   socket.to(memberSocketId).emit("OnGroup",content);
                   console.log("message emitted", content)
                     
