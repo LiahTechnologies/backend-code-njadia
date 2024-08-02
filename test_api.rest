@@ -9,7 +9,7 @@ Content-Type: application/json
 {
     "firstName": "Matthew Henry",
     "lastName":"John",
-    "email":"matthew@gmail.com",
+    "email":"henry@gmail.com",
     "password":"123456",
     "dob":"15/05/1999",
     "selfie":"myself",
@@ -24,7 +24,7 @@ POST http://localhost:5000/api/auth/login
 Content-Type:application/json
 
 {
-    "email":"matthew@gmail.com",
+    "email":"henry@gmail.com",
     "password":"123456"
 }
 
@@ -157,24 +157,50 @@ Content-Type: application/json
 #add  group member
 
 ###
-PATCH  http://localhost:5000/api/groups/members/66a0ad2fe2008f1ad5726a3b
+PATCH  http://localhost:5000/api/groups/members/66acaf3efdba2665ee7a5bda
 Content-Type: application/json
 
 {
-     "userId":"66a0aeb2e2008f1ad5726a3d"
+     "userId":"66acaf2efdba2665ee7a5bd9"
 }
 
-# 66a0acbde2008f1ad5726a3a
 
+
+#add  group approval
+
+###
+PATCH  http://localhost:5000/api/groups/approval/66acaf3efdba2665ee7a5bda
+Content-Type: application/json
+
+{
+     "userId":"66acaf2efdba2665ee7a5bd9"
+}
+
+
+
+
+
+# Get group approval
+
+
+###
+GEt  http://localhost:5000/api/groups/approval/66acaf3efdba2665ee7a5bda
+
+# 66acaf2efdba2665ee7a5bd9
+# 66a0acbde2008f1ad5726a3a
 # 66a0aeb2e2008f1ad5726a3d
+
+66acaf3efdba2665ee7a5bda
+
+
 #Delete  group member
 
 ###
-DELETE   http://localhost:5000/api/groups/members/66a0ad2fe2008f1ad5726a3b
+DELETE   http://localhost:5000/api/groups/members/66acaf3efdba2665ee7a5bda
 Content-Type: application/json
 
 {
-    "userId":"66a0aeb2e2008f1ad5726a3d"
+    "userId":"66acaf2efdba2665ee7a5bd9"
 }
 
 
@@ -185,8 +211,23 @@ DELETE   http://localhost:5000/api/groups/admins/66571e6684334628302ee27c
 Content-Type: application/json
 
 {
-    "userId":"johon2028498m"
+    "userId":"66acaf2efdba2665ee7a5bd9"
 }
+
+
+
+#Delete request to join group
+
+
+###
+DELETE   http://localhost:5000/api/groups/approval/66acaf3efdba2665ee7a5bda
+Content-Type: application/json
+
+{
+    "userId":"66ace1e6b8a1bab4f25a9387"
+}
+
+#66ace1e6b8a1bab4f25a9387
 
 
 
@@ -260,6 +301,7 @@ Content-Type: application/json
 
 ###
 POST   http://localhost:5000/api/messages/
+
 Content-Type: application/json
 
 {

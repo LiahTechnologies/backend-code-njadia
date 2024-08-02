@@ -27,6 +27,14 @@ const groupModel = new mongoose.Schema({
            
         }
     ],
+
+    pendingApprovement:[
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref:"Users",
+           
+        }
+    ],
     groupLevy:{
         type: String,
         required : true,

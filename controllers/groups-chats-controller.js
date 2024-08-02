@@ -35,6 +35,37 @@ const addAdmin = async(req,res)=>{
 
 
 
+const waitingApprovement = async(req,res)=>{
+    if(req.body.userId!=null){
+
+        let checkResult= res.group.pendingApprovement.filter(e=>e==req.body.userId)
+
+        if(checkResult.length>0)
+            return res.json({"message":"User already exist"})
+        else{
+            res.group.pendingApprovement=[
+                ... res.group.pendingApprovement,
+                req.body.userId
+            ];
+        }
+       
+    }
+
+    try {
+        const updateResult = await res.group.save()
+        
+        if(updateResult.length!=0)
+            res.status(200).json({"message":true})
+        else
+         res.status(200).json({"message":false})
+        
+    } catch (error) {
+        return res.status(500).json({message:error.message})
+    }
+}
+
+
+
 
 /**********ADD USER TO GROUP********** */
 
@@ -51,7 +82,11 @@ const joinGroup =  async(req,res)=>{
                             req.body.userId
                         ];
 
-                        console.log("ERROR AT THIS LEVEL")
+                      
+                    // Removing user from pending list
+
+                    res.group.pendingApprovement=res.group.pendingApprovement.filter(e=>e!=req.body.userId)
+
 
                     }
                        
@@ -206,15 +241,34 @@ const getGroupMembers=async(req,res)=>{
     }
 }
  
+
+
+
+/************GET Pending Group  Members**************/
+
+const getPendingGroupApprovals=async(req,res)=>{
+
+    try {
+     
+       const members =await groupModel.findById(req.params.id).populate("pendingApprovement")
+     res.send(members.pendingApprovement)
+     
+    } catch (error) {
+ 
+     return res.status(500).json({message:error.message})
+    }
+}
+ 
+
+
+
 /***************** */
 const getGroupMember=async(req,res)=>{
 
     try {
      let result = res.group.groupMembers.find(e=>e==req.body.id)
-       if(result!=null)
-        res.send(true)
-       else
-       res.send(false)
+      
+       res.send(result)
      
     } catch (error) {
  
@@ -232,7 +286,7 @@ const deleteUserFromGroup =async(req,res)=>{
     if(req.body.userId!=null){
         res.group.groupMembers= await res.group.groupMembers.filter(userId=>userId!=req.body.userId)
    
-        
+       
     }
 
     const response = await res.group.save()
@@ -268,12 +322,34 @@ const deleteAdminFromGroup=async(req,res)=>{
 
 
 
+/************DELETE Pending GROUP Join Reques**************/
+
+const deletePendingGroupJoinReques=async(req,res)=>{
+
+    try {
+     if(req.body.userId!=null){
+        res.group.pendingApprovement= await res.group.pendingApprovement.filter(userId=>userId!=req.body.userId)
+       
+     }
+ 
+     const response = await res.group.save()
+     res.send(response)
+     
+    } catch (error) {
+ 
+     return res.status(500).json({message:error.message})
+    }
+}
+ 
 
 
 
 
 
-module.exports = {addAdmin,joinGroup,CreateGroup,getAGroup,allGroups,deleteUserFromGroup,deleteAdminFromGroup,getGroupMembers,getGroupAdmin, getGroupMember}
+
+
+
+module.exports = {deletePendingGroupJoinReques,getPendingGroupApprovals,waitingApprovement,addAdmin,joinGroup,CreateGroup,getAGroup,allGroups,deleteUserFromGroup,deleteAdminFromGroup,getGroupMembers,getGroupAdmin, getGroupMember}
 
 
 
