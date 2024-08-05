@@ -122,11 +122,11 @@ POST http://localhost:5000/api/groups
 Content-Type: application/json
 
 {
-    "groupName":"Flutter-",
+    "groupName":"Mens",
     "groupLevy":"30000",
     "groupIcon":"icon.png",
-    "groupMembers":[],
-    "groupAdmins":["668683c2d82f350ed0687e82"]
+    "groupMembers":["67356777"],
+    "groupAdmins":["66b09c619ee9a71b8eddbf3c"]
 }
 
 #Get group admins

@@ -3,6 +3,7 @@ const { response } = require('express')
 const registrationModel = require('../model/register')
 const generateTokenSetCookie = require('../utils/generate_token')
 const Bcrypt = require('bcryptjs')
+const { use } = require('../routes/group-chats')
 
 
 const signup =async (req,res)=>{
@@ -34,12 +35,13 @@ const signup =async (req,res)=>{
              generateTokenSetCookie(newUser._id,res)
 
              const activeUser=   await newUser.save()
-             const {_id,firstName,lastName, email}=activeUser
+             const {_id,firstName,lastName, email,tel}=activeUser
              const user_info={
                 "userId":_id,
                 "firstName":firstName,
                 "lastName":lastName,
                 "email":email,
+                "tel":tel,
                 "token":"token.jwt"
 
              }
@@ -85,6 +87,7 @@ const login =async (req,res)=>{
             firstName:user.firstName,
             lastName:user.lastName,
             email:user.email,
+            tel:user.tel,
             token:"token.token"
 
 

@@ -56,4 +56,17 @@ const registrationschema = new mongoose.Schema({
 
 })
 
+
+
+// Add a static method to the schema
+registrationschema.statics.findAllOrFail = async function(query) {
+    const result = await this.find(query);
+    if (result.length === 0) {
+        return []
+    }
+    return result;
+};
+
+
+
 module.exports= mongoose.model('Users',registrationschema)
