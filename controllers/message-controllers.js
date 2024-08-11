@@ -159,6 +159,8 @@ const sendGroupMessage =async (req, res)=>{
         if(group && group.groupMembers){
 
             // console.log(group.groupMembers,"members")
+            // IO.to(memberSocketId).emit("newGroupMessage",newMessage);
+
 
             group.groupMembers.forEach(element => {
 
@@ -176,6 +178,7 @@ const sendGroupMessage =async (req, res)=>{
                     IO.to(memberSocketId).emit("newGroupMessage",newMessage);
                       
                 }
+
 
                 console.log("SENT BACK MESSAGE IS ", newMessage)
             });

@@ -16,17 +16,20 @@ const addNewchat= async(req,res)=>{
         if(req.body.userId!=null){
 
             // check if user exist
-
+            console.log("THIS THE RECEIPIENT ID ",req.body.userId)
             const chatExist = res.users.chats.filter((e)=> e==req.body.userId)
             console.log(" the value of user exist", chatExist)
             if(chatExist.length>0) return res.status(500).json({"message":false})
+
+
+                // Add chats to both users chat list
 
             res.users.chats=unique( [
                 ...res.users.chats,
                 req.body.userId
             ])
 
-            // add chats to  useers list of chats  
+            // add chats  
 
             const receiver = await userModel.findById(req.body.userId);
             

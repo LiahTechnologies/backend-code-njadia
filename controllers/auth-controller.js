@@ -50,6 +50,9 @@ const signup =async (req,res)=>{
 
    
     } catch (error) {
+        if(error.message.includes("duplicate key")){
+            res.status(409).json({"error":"Email already exist"})
+        }
 
         console.log("Error in sign up controller", error.message)
 
@@ -95,6 +98,7 @@ const login =async (req,res)=>{
 
 
     } catch (error) {
+
 
         console.log("Error in login controller", error.message)
         res.status(500).json({message:"internal server error"})
