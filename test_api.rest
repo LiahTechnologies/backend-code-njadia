@@ -308,3 +308,16 @@ Content-Type: application/json
     "uid":"66a238f558037cbe8683188b",
     "receiverId":"66a214176ffa7b10305f1555"
 }
+
+
+
+
+###
+
+gET   http://localhost:5000/api/user-chats/groups/66b9ff89b9bcffb8bbd10017
+# Content-Type: application/json
+
+# {
+#     "groups":["66b9a894cf6deb11a60bc3a8",
+#       "66b9ab9acf6deb11a60bc3aa"]
+# }

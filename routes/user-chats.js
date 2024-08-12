@@ -1,6 +1,6 @@
 const express = require('express')
 
-const { getAChat, addNewchat, deleteChat, getUserChats, getUserGroups, getAGroup, addNewGroup } = require('../controllers/user-chats-controller')
+const { getAChat, addNewchat, deleteChat, getUserChats, getUserGroups, getAGroup, addNewGroup, deleteGroup } = require('../controllers/user-chats-controller')
 const getUser = require('../middleware/get-user')
 const checkIfYourExist = require("../middleware/user-exist")
 const chatsRouters = express.Router()
@@ -9,6 +9,15 @@ const chatsRouters = express.Router()
 
 /*************GET ALL CHATS************ */
 chatsRouters.get('/:id',checkIfYourExist,getUserChats)
+
+//All User chats Chats
+
+// chatsRouters.get('/chats/:id',getUser,userChats)
+
+
+// All User Groups
+
+// chatsRouters.get('/groups/:id',userGroups)
 
 
 /**********ADD NEW CHAT********** */
@@ -25,6 +34,7 @@ chatsRouters.post('/chats/:id',getUser,getAChat)
 /************DELETE A CHAT **************/
 
 chatsRouters.delete('/chats/:id',getUser,deleteChat)
+chatsRouters.delete('/groups/:id',getUser,deleteGroup)
 
 
 /*************GET ALL USER GROUPS************ */

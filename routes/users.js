@@ -35,12 +35,12 @@ routers.delete('/',deleteAll)
 
 //All User chats Chats
 
-routers.get('/chats/:id',getUser,userChats)
+// routers.get('/chats/:id',getUser,userChats)
 
 
 // All User Groups
 
-routers.get('/groups/:id',userGroups)
+// routers.get('/groups/:id',userGroups)
 
 // routers.get('/groups/:id',getUser,userGroups)
 

@@ -33,7 +33,11 @@ const mongoose = require('mongoose')
 
     replyMessage:{
         type: String
+    },
+    time:{
+        type:String
     }
+
  },{timestamp:true});
 
 

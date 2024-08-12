@@ -167,9 +167,9 @@ io.on('connection',(socket)=>{
 
     socket.on('groupMessage', async (data) => {
       console.log("sent message",data)
-      const { message, messageSender,senderId, receiverId, messageReceiver,replyMessage, replySender ,dateTime} = data;
+      const { message, messageSender,senderId, receiverId, messageReceiver,replyMessage, replySender ,time} = data;
 
-      const content =  await new Message({ message, senderId, receiverId,messageSender, messageReceiver,replySender, replyMessage,dateTime});
+      const content =  await new Message({ message, senderId, receiverId,messageSender, messageReceiver,replySender, replyMessage,time});
       
       await content.save(async(err) => {
 

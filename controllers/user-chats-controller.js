@@ -117,8 +117,77 @@ const getAGroup = async(req,res)=>{
 
 /************DELETE A USER GROUPS **************/
 const getUserGroups = async(req,res)=>{
-     
-    res.send(res.users.groups.poplate("groups"))
+/*
+
+    try {
+        // Create a readable stream
+        const userStream = new Readable({
+          read() {}
+        });
+    
+        // Fetch users and push data to the stream
+        const cursor = userModel.find({}).cursor();
+    
+        cursor.on('data', (user) => {
+          // Format user data as JSON and push to the stream
+          const userJson = JSON.stringify({
+            _id: user._id,
+            firstName: user.firstName,
+            lastName: user.lastName,
+            email: user.email,
+            tel: user.tel,
+            dob: user.dob,
+            groups: user.groups // Assuming `groups` is already a list of objects or IDs in your model
+          });
+    
+          userStream.push(userJson + '\n'); // Add newline to separate JSON objects
+        });
+    
+        cursor.on('end', () => {
+          userStream.push(null); // End the stream
+        });
+    
+        // Set the response header for streaming
+        res.setHeader('Content-Type', 'application/json');
+    
+        // Pipe the userStream to the response
+        userStream.pipe(res);
+    
+      } catch (error) {
+        res.status(500).json({ error: 'An error occurred while streaming users.' });
+      }
+*/
+    /*
+    res.setHeader('Content-Type', 'application/json');
+
+    const result = await userModel.findById(req.params.id).populate('groups').cursor();
+
+    result.on('data',(data)=>{
+        res.write(JSON.stringify(data) +'\n')
+    })
+
+    result.on('close',()=>{
+        res.end()
+    })
+
+    result.on('error', (err) => {
+        res.status(500).send('Error occurred: ' + err.message);
+      });
+
+
+      req.on('close', () => {
+        if (!result.isClosed) {
+            result.close(); // Manually close the cursor if the request closes prematurely
+        }
+      });*/
+
+
+
+      
+     const result = await userModel.findById(req.params.id).populate('groups');
+
+  
+    res.send(result.groups)
 
 }
 
@@ -127,8 +196,8 @@ const getUserGroups = async(req,res)=>{
 const deleteChat = async(req,res)=>{
 
    try {
-    if(req.body.userId!=null){
-        res.users.chats= await res.users.chatss.filter(userId=>userId!=req.body.userId)
+    if(req.body.users!=null){
+        res.users.chats= await res.users.chats.filter(userId=>req.body.users.includes(userId))
       
     }
 
@@ -141,9 +210,26 @@ const deleteChat = async(req,res)=>{
    }
 }
 
+const deleteGroup = async(req,res)=>{
+
+    try {
+     if(req.body.groups.length>0){
+         res.users.groups= await res.users.groups.filter(groupId=>req.body.groups.includes(groupId))
+       console.log("THE CODE ")
+     }
+ 
+     const response = await res.users.save()
+     
+     res.send(response)
+    } catch (error) {
+ 
+     return res.status(500).json({message:error.message})
+    }
+ }
 
 
 
 
 
-module.exports = {addNewchat,getUserChats,deleteChat,getAChat,getUserGroups,getAGroup,addNewGroup}
+
+module.exports = {addNewchat,getUserChats,deleteChat,deleteGroup,getAChat,getUserGroups,getAGroup,addNewGroup}

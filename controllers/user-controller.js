@@ -80,17 +80,17 @@ const deleteAll = async(req,res)=>{
 
 
 const userChats = async(req,res)=>{
-    const result = await registrationModel.findById(req.params.id).populate('chats');
+    // const result = await registrationModel.findById(req.params.id).populate('chats');
 
-    res.send(result.chats)
+    // res.send(result.chats)
 }
 
 const userGroups = async(req,res)=>{
-    const result = await registrationModel.findById(req.params.id).populate('groups');
+    // const result = await registrationModel.findById(req.params.id).populate('groups');
 
-    // const result =  await res.users.populate('groups')
-    console.log(result,"users and groups" )
-    res.send(result.groups)
+    // // const result =  await res.users.populate('groups')
+    // console.log(result,"users and groups" )
+    // res.send(result.groups)
 }
 
 module.exports= {getAllUser,User,userByEmail,updateDetails,deleteUser,deleteAll,userChats,userGroups}

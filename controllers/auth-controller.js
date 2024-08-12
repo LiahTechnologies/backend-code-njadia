@@ -24,6 +24,9 @@ const signup =async (req,res)=>{
         socketId:req.body.socketId
 
     })
+
+    
+
     
     try {
 
