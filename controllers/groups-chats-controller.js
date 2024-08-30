@@ -151,7 +151,7 @@ const CreateGroup = async(req,res)=>{
 
     const {groupMembers}= req.body
 
-    console.log("GROUP MEMBER ARE: ",typeof(groupMembers))
+    console.log("GROUP MEMBER ARE: ",groupMembers)
 
     const validMembers = await getValidMembers(groupMembers)
     console.log("GROUP MEMBER ARE: ",validMembers.length)
@@ -293,7 +293,54 @@ const getGroupMember=async(req,res)=>{
      return res.status(500).json({message:error.message})
     }
 }
- 
+
+
+
+
+
+
+
+
+
+/** */
+
+
+function generateList(n) {
+    return Array.from({ length: n }, (_, i) => i + 1);
+}
+
+const generateBallotNumbers = async(req, res)=>{
+    console.log("THIS IS THE GROUP ID", req.params.id)
+    const group =await groupModel.findById(req.body.groupId)
+    const ballotNumbers= generateList(group.groupMembers.length)
+
+    group.ballotNumbers= ballotNumbers
+
+    console.log("The generated ballot number are ",group.ballotNumbers)
+    group.save()
+
+    res.send(group.ballotNumbers)
+
+}
+
+
+/**FETCH GROUP BALLOT NUMBERS */
+
+const fetchBalloNumbers = async(req, res)=>{
+    console.log("THIS IS THE GROUP ID", req.params.id)
+   const user= await groupModel.findOne({"ballotList.value":req.body.uid})
+   if(user)
+    res.status.json({"message":"ballot user already exist"})
+
+   else {
+    const group =await groupModel.findById(req.body.groupId)
+    res.send(group.ballotNumbers)
+   }
+    
+
+}
+
+
 
 
 /************DELETE USER FROM GROUP**************/
@@ -367,7 +414,7 @@ const deletePendingGroupJoinReques=async(req,res)=>{
 
 
 
-module.exports = {deletePendingGroupJoinReques,getPendingGroupApprovals,waitingApprovement,addAdmin,joinGroup,CreateGroup,getAGroup,allGroups,deleteUserFromGroup,deleteAdminFromGroup,getGroupMembers,getGroupAdmin, getGroupMember}
+module.exports = {fetchBalloNumbers,deletePendingGroupJoinReques,getPendingGroupApprovals,waitingApprovement,addAdmin,joinGroup,CreateGroup,getAGroup,allGroups,deleteUserFromGroup,deleteAdminFromGroup,getGroupMembers,getGroupAdmin, getGroupMember,generateBallotNumbers}
 
 
 

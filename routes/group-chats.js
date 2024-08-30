@@ -1,6 +1,6 @@
 const express = require('express')
 const groupRoutes = express.Router()
-const { deleteAdminFromGroup, deleteUserFromGroup, getAllGroup, getAGroup, allGroups, CreateGroup, joinGroup, addAdmin, getGroupMembers, getGroupAdmin, getGroupMember, waitingApprovement, getPendingGroupApprovals, deletePendingGroupJoinReques } = require('../controllers/groups-chats-controller');
+const { deleteAdminFromGroup, deleteUserFromGroup, getAllGroup, getAGroup, allGroups, CreateGroup, joinGroup, addAdmin, getGroupMembers, getGroupAdmin, getGroupMember, waitingApprovement, getPendingGroupApprovals, deletePendingGroupJoinReques, generateBallotNumbers, fetchBalloNumbers } = require('../controllers/groups-chats-controller');
 const {getGroup,getGroupByName} = require('../middleware/get-user-group');
 
 /**********ADD ADMINS TO GROUP********** */
@@ -25,9 +25,15 @@ groupRoutes.post('/member/:id',getGroup,getGroupMember)
 
 
 
+/**GENERATE BALLOTE NUMBERS */
+
+groupRoutes.post('/generate-ballots', generateBallotNumbers)
 
 
 
+/*********FETCH BALLOT NUMBERS *******/
+
+groupRoutes.post('/fetch-ballots', fetchBalloNumbers)
 
 /*****************GET ALL GROUP*********/
 

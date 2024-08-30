@@ -54,6 +54,33 @@ const groupModel = new mongoose.Schema({
         default: Date.now()
     },
 
+    ballotList: {
+        type: [{
+            key: {
+                type: String,
+                
+            },
+            value: {
+                type: String,
+                
+            }
+        }],
+
+        validate: {
+            validator: function(v) {
+                const keys = v.map(pair => pair.key);
+                return keys.length === new Set(keys).size;
+            },
+            message: 'Keys must be unique within keyValuePairs.'
+                 },
+   },
+
+   ballotNumbers:[
+        {
+            type: String
+        }
+   ],
+
     updatedAt:{
         type: Date,
         default: Date.now()

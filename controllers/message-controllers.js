@@ -221,6 +221,7 @@ const fetchInitalMessage= async(req, res )=>{
 
         const  user = await Users.findById(uid)
         const group = user.groups.filter(e=>e==groupId)
+        
 
         const message = await groupModel.findById(group).populate('messages')
         res.json(message.messages);
@@ -228,7 +229,38 @@ const fetchInitalMessage= async(req, res )=>{
         res.status(500).json({ message: error.message });
       }
 }
-module.exports= {sendMessage,getMessages,sendGroupMessage,fetchGroupMessage, fetchInitalMessage}
+
+
+const fetchLastMessage= async(req, res )=>{
+
+    try {
+
+        console.log("gETTING LAST MESSAGE")
+
+        const {uid,groupId}= req.body
+        
+       
+
+        const  user = await Users.findById(uid)
+
+        // filter the specific group from other groups
+
+        const group = user.groups.filter(e=>e==groupId)
+
+        console.log("THE TARGETED USER GROUP IS ",group)
+
+        console.log("PORCESSING LAST MESSAGE", uid)
+
+        const message = await groupModel.findById(group).populate('messages')
+        
+        console.log("LAST MESSAGE LOADED",groupId)
+
+        res.json(message.messages[message.messages.length>0?message.messages.length-1:0]);
+      } catch (error) {
+        res.status(500).json({ message: error.message });
+      }
+}
+module.exports= {sendMessage,getMessages,sendGroupMessage,fetchGroupMessage, fetchLastMessage,fetchInitalMessage}
 
 
 

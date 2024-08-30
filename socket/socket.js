@@ -165,6 +165,37 @@ io.on('connection',(socket)=>{
   
 
 
+    // Group messaging
+    socket.on('selectballote', async(data) => {
+        const {userId, groupId, value}= data
+        const group = await groupModel.findById(groupId);
+        const input = {key:value,value:userId}
+        group.ballotNumbers=group.ballotNumbers.filter((number)=>number!=value)
+
+        group.ballotList.add(input)
+
+
+
+        group.groupMembers.forEach(element => {
+
+          console.log("EVENT IS BEING TRIGGERED",element._id)
+
+          console.log("CONNECTED USERS",users)
+
+          const memberSocketId=getRecieverSocketId(element._id.toString())
+          
+
+          if(memberSocketId){
+              // socket.emit("OnGroup",content)
+              socket.to(memberSocketId).emit("ballots",group.ballotNumbers);
+              console.log("message emitted", content)
+                
+          }
+      });
+        return  group.save()
+
+    });
+
     socket.on('groupMessage', async (data) => {
       console.log("sent message",data)
       const { message, messageSender,senderId, receiverId, messageReceiver,replyMessage, replySender ,time} = data;

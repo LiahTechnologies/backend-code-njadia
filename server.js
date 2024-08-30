@@ -13,6 +13,7 @@ const messageRoute            = require('./routes/message-route');
 const chatListRoutes          = require('./routes/chat-user')
 const authRoute               = require('./routes/auth_route')
 const connectToMongoDb        = require('./db/connect')
+const fileRouter              = require('./routes/upload-file')
 
 
 
@@ -31,6 +32,9 @@ app.use('/api/auth',         authRoute)
 
 app.use('/api/groups',       UsergroupRoutes)
 app.use('/api/user-chats',   UserchatsRouters)
+
+app.use('/api/files', fileRouter)
+
 
 
 server.listen(PORT,()=>{

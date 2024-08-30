@@ -32,7 +32,12 @@ Content-Type:application/json
 ###
 
 POST http://localhost:5000/api/auth/logout
+Content-Type: application/json
 
+{
+    "email":"example@gmail.com",
+    "password":123456
+}
 
 
 # All users
@@ -115,6 +120,9 @@ Content-Type: application/json
 
 
 
+
+
+
 #create  a group
 
 ###
@@ -173,8 +181,9 @@ PATCH  http://localhost:5000/api/groups/approval/66acaf3efdba2665ee7a5bda
 Content-Type: application/json
 
 {
-     "userId":"66acaf2efdba2665ee7a5bd9"
+     "uid":"66acaf2efdba2665ee7a5bd9"
 }
+
 
 
 
@@ -286,15 +295,15 @@ GET http://localhost:5000/api/messages/665858adec9c9c696f2cbd52
 
 
 
-#Get messages
+#Get all initial messages
 
 ###
 POST   http://localhost:5000/api/messages/init
 Content-Type: application/json
 
 {
-    "uid":"669f76936a056a2dfbae170c",
-    "groupId":"669f76bc6a056a2dfbae170d"
+     "uid":"66c48ce866ac0d17ccb277c7",
+    "groupId":"66c492bb66ac0d17ccb277c8"
 }
 
 
@@ -305,11 +314,20 @@ POST   http://localhost:5000/api/messages/
 Content-Type: application/json
 
 {
-    "uid":"66a238f558037cbe8683188b",
-    "receiverId":"66a214176ffa7b10305f1555"
+     "uid":"66c48ce866ac0d17ccb277c7",
+    "groupId":"66c492bb66ac0d17ccb277c8"
 }
 
 
+###
+
+POST   http://localhost:5000/api/messages/lastMessage
+Content-Type: application/json
+
+{
+    "uid":"66c48ce866ac0d17ccb277c7",
+    "groupId":"66c4a32266ac0d17ccb277dc"
+}
 
 
 ###
@@ -321,3 +339,30 @@ gET   http://localhost:5000/api/user-chats/groups/66b9ff89b9bcffb8bbd10017
 #     "groups":["66b9a894cf6deb11a60bc3a8",
 #       "66b9ab9acf6deb11a60bc3aa"]
 # }
+
+
+
+###
+
+Post http://localhost:5000/api/groups/generate-ballots
+Content-Type: application/json
+
+{
+    "groupId":"66d054c8d2da7068a9cb9a3b"
+}
+
+
+# 66d05358d2da7068a9cb9a3a
+
+
+
+
+###
+
+Post http://localhost:5000/api/groups/fetch-ballots
+Content-Type: application/json
+
+{
+    "groupId":"66d19a8103e3100f23ea8585",
+    "uid":"66d199e003e3100f23ea8584"
+}

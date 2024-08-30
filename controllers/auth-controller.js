@@ -4,9 +4,12 @@ const registrationModel = require('../model/register')
 const generateTokenSetCookie = require('../utils/generate_token')
 const Bcrypt = require('bcryptjs')
 const { use } = require('../routes/group-chats')
+const upload = require('./upload-file')
 
 
-const signup =async (req,res)=>{
+const signup = async (req,res)=>{
+
+   
    
     const salt = await Bcrypt.genSalt(10)
     const hashpass = await Bcrypt.hash(req.body.password,salt)
