@@ -39,6 +39,7 @@ app.use('/api/files', fileRouter)
 
 server.listen(PORT,()=>{
   connectToMongoDb()
+  console.log(process.env.SPACES_ENPOINT,"THIS IS THE BUNKET NAME")
 })
 
 

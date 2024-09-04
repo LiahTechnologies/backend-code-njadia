@@ -9,7 +9,8 @@ const {uploadFile,sigupFiles, upload} = require('../controllers/upload-file')
 
 const uploadFields = upload.fields([
     { name: 'selfie', maxCount: 1 }, // Handle single selfie file
-    { name: 'docs', maxCount: 1 } // Handle up to 5 document files
+    { name: 'docs', maxCount: 1 },
+    { name: 'profilePic', maxCount: 1} // Handle up to 5 document files
   ]);
 
 const uploadField = upload.fields([

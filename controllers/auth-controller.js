@@ -17,14 +17,14 @@ const signup = async (req,res)=>{
     const newUser =  new registrationModel({
         firstName:req.body.firstName,
         lastName:req.body.lastName,
-
+        profilePic: req.body.profilePic,
         email:req.body.email,
         tel:req.body.tel,
         dob:req.body.dob,
         password:hashpass,
         selfie:req.body.selfie,
         docs:req.body.selfie,
-        socketId:req.body.socketId
+        // socketId:req.body.socketId
 
     })
 
@@ -41,13 +41,14 @@ const signup = async (req,res)=>{
              generateTokenSetCookie(newUser._id,res)
 
              const activeUser=   await newUser.save()
-             const {_id,firstName,lastName, email,tel}=activeUser
+             const {_id,firstName,lastName, email,tel,profilePic}=activeUser
              const user_info={
                 "userId":_id,
                 "firstName":firstName,
                 "lastName":lastName,
                 "email":email,
                 "tel":tel,
+                "profilePic":profilePic,
                 "token":"token.jwt"
 
              }
@@ -97,6 +98,7 @@ const login =async (req,res)=>{
             lastName:user.lastName,
             email:user.email,
             tel:user.tel,
+            profilePic:user.profilePic,
             token:"token.token"
 
 

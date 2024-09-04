@@ -28,6 +28,10 @@ const registrationschema = new mongoose.Schema({
         type: String,
         required:true
     },
+    profilePic:{
+            type:String,
+            required:true
+    },
     selfie:{
         type: String,
         required:true
@@ -49,10 +53,7 @@ const registrationschema = new mongoose.Schema({
         }
     ]
             
-    ,
-    socketId:{
-        type:String
-    }
+   
 
 })
 

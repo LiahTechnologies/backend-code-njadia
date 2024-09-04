@@ -174,7 +174,7 @@ const CreateGroup = async(req,res)=>{
         let newGroup = new groupModel({
             groupName:req.body.groupName,
             groupLevy:req.body.groupLevy,
-            groupIcon:req.body.groupIcon,
+            groupIcon:req.body.profilePic,
             groupMembers:validMembers,
             groupAdmins:req.body.groupAdmins
     
@@ -305,17 +305,23 @@ const getGroupMember=async(req,res)=>{
 /** */
 
 
-function generateList(n) {
-    return Array.from({ length: n }, (_, i) => i + 1);
+function generateUniqueList(n) {
+    const set = new Set();
+    while (set.size < n) {
+        set.add(Math.floor(Math.random() * n) + 1);
+    }
+    return Array.from(set);
 }
+
 
 const generateBallotNumbers = async(req, res)=>{
     console.log("THIS IS THE GROUP ID", req.params.id)
     const group =await groupModel.findById(req.body.groupId)
-    const ballotNumbers= generateList(group.groupMembers.length)
+    const ballotNumbers= generateUniqueList(group.groupMembers.length)
 
     group.ballotNumbers= ballotNumbers
-
+    group.ballotList=[];
+    
     console.log("The generated ballot number are ",group.ballotNumbers)
     group.save()
 
@@ -327,10 +333,13 @@ const generateBallotNumbers = async(req, res)=>{
 /**FETCH GROUP BALLOT NUMBERS */
 
 const fetchBalloNumbers = async(req, res)=>{
-    console.log("THIS IS THE GROUP ID", req.params.id)
-   const user= await groupModel.findOne({"ballotList.value":req.body.uid})
-   if(user)
-    res.status.json({"message":"ballot user already exist"})
+    console.log("THIS IS THE GROUP ID", req.body.groupId)
+    const group =await groupModel.findById(req.body.groupId)
+    group.ballotList.value==req.body.uid
+    const user = group.ballotList.filter((e)=>e.value==req.body.uid)
+//    const user= await groupModel.findOne({"ballotList.value":req.body.uid})
+   if(user.length>0)
+    res.status(500).json({"message":"ballot user already exist"})
 
    else {
     const group =await groupModel.findById(req.body.groupId)
@@ -345,8 +354,7 @@ const fetchBalloNumbers = async(req, res)=>{
 
 /************DELETE USER FROM GROUP**************/
 
-const deleteUserFromGroup =async(req,res)=>{
-
+const deleteUserFromGroup =async(req,res)=>{ 
    try {
     if(req.body.userId!=null){
         res.group.groupMembers= await res.group.groupMembers.filter(userId=>userId!=req.body.userId)

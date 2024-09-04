@@ -167,12 +167,12 @@ io.on('connection',(socket)=>{
 
     // Group messaging
     socket.on('selectballote', async(data) => {
-        const {userId, groupId, value}= data
+        const {uid, groupId, value}= data
         const group = await groupModel.findById(groupId);
-        const input = {key:value,value:userId}
+        const input = {key:value,value:uid}
         group.ballotNumbers=group.ballotNumbers.filter((number)=>number!=value)
 
-        group.ballotList.add(input)
+        group.ballotList=[...group.ballotList,input]
 
 
 
@@ -188,10 +188,10 @@ io.on('connection',(socket)=>{
           if(memberSocketId){
               // socket.emit("OnGroup",content)
               socket.to(memberSocketId).emit("ballots",group.ballotNumbers);
-              console.log("message emitted", content)
+              console.log("message emitted", group.ballotNumbers)
                 
           }
-      });
+      })
         return  group.save()
 
     });
